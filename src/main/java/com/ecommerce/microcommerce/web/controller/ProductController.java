@@ -62,6 +62,7 @@ public class ProductController {
 
         if(produit==null) throw new ProduitIntrouvableException("Le produit avec l'id " + id + " est INTROUVABLE. Écran Bleu si je pouvais.");
 
+        if(produit.getPrix() == 0) throw new ProduitGratuitException ("Le produit de l'id "+id+" est gratuit"); 
         return produit;
     }
 
@@ -114,9 +115,17 @@ public class ProductController {
     	 for(Product p : produits) {
     		 aa.put(p.toString(),(p.getPrix()-p.getPrixAchat()));
     	 }
-    	    	 
     	 return aa;
     }
+    
+    // juste for checking id it work 
+    @GetMapping("/ProduitsOrd")
+    public List<Product> prodOrd () {
+    	 List<Product> produits = productDao.trierProduitsParOrdreAlphabetique();
+    	 return produits;
+    }
+    
+    
 
 
 }
