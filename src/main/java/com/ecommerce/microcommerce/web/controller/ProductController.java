@@ -16,7 +16,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Api( description="API pour es opérations CRUD sur les produits.")
@@ -35,6 +38,7 @@ public class ProductController {
     public MappingJacksonValue listeProduits() {
 
         Iterable<Product> produits = productDao.findAll();
+        System.out.println("\n\n"+produits+"\n\n");
 
         SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("prixAchat");
 
@@ -103,6 +107,16 @@ public class ProductController {
         return productDao.chercherUnProduitCher(400);
     }
 
+    @GetMapping("/AdminProduits")
+    public Map<String,Integer> calculerMargeProduit () {
+    	 List<Product> produits = productDao.findAll();
+    	 Map<String,Integer> aa = new LinkedHashMap<>();
+    	 for(Product p : produits) {
+    		 aa.put(p.toString(),(p.getPrix()-p.getPrixAchat()));
+    	 }
+    	    	 
+    	 return aa;
+    }
 
 
 }
